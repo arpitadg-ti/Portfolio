@@ -1,114 +1,530 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-
+    <title>Task Manager App</title>
     <style>
-        body{
-            margin: 0;
+        body {
             font-family: Arial, sans-serif;
-            background: #f5f5f5;
+            background: linear-gradient(to right, #5f8e96, #cfe27c);
         }
 
-        .container{
-            width: 600px;
-            margin: auto;
-            margin-top: 50px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        h1{
-            text-align: center;
-        }
-
-        h2{
-            margin-top: 20px;
-        }
-
-        p{
-            color: #555;
-            line-height: 1.5;
-        }
-
-        .section{
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 1px solid #ddd;
-        }
-
-        .projects{
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .project-card{
-            flex: 1;
-            padding: 15px;
-            background: #f0f0f0;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            font-weight: bold;
-
-        }
-
-        .project-card:hover{
-            background: #79a7dd;
+        .dark-mode {
+            background: linear-gradient(to right, #1e1e1e, #2c2c2c);
             color: white;
         }
 
-        .header{
-            text-align: center;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #eee;
+        .dark-mode .container {
+            background: #333;
+            color: white;
         }
 
-        .header p{
+        .dark-mode li {
+            background: #444;
+            color: white;
+        }
+
+        .dark-mode li:hover {
+            background: #555;
+
+        }
+
+        .dark-mode input,
+        .dark-mode select {
+            background: #555;
+            color: white;
+            border: 1px solid #777;
+        }
+
+        #themeBtn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            background: #333;
+            color: white;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            flex-wrap: wrap;
+        }
+
+        li button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        li:hover {
+            background: #e8e8e8;
+            transform: scale(1.02);
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .container {
+            margin: auto;
+            width: 90%;
+            max-width: 650px;
+            margin-top: 80px;
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        .input-group {
+            gap: 10px;
+            display: flex;
+            margin: 10px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .input-group button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #6a94c7;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .input-group button:hover {
+            background: #5076a8;
+        }
+
+        .active {
+            background-color: #5076a8;
+            color: white;
+        }
+
+        #emptyMsg {
             color: #777;
-            margin-top: 5px;
+            margin-top: 10px;
+
+        }
+
+        .priority {
+            margin-left: 8px;
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-size: 12px;
+            color: white;
+
+        }
+
+        .high {
+            background-color: #e74c3c;
+        }
+
+        .medium {
+            background-color: #f39c12;
+        }
+
+        .low {
+            background-color: #27ae60;
+        }
+
+        #dueDate {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        #searchInput {
+            width: 250px;
+            padding: 8px;
+            margin-top: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background-color: #638fc6;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .task-high {
+            border-left: 5px solid #e74c3c;
+        }
+
+        .task-medium {
+            border-left: 5px solid #f39c12;
+        }
+
+        .task-low {
+            border-left: 5px solid #27ae60;
         }
     </style>
 </head>
+
 <body>
-
     <div class="container">
-        <div class="header">
-    <h1>Arpita Dasgupta</h1>
-    <p>Aspiring Frontend Developer</p>
+        <h2>Task Manager List</h2>
+        <p>Organize your daily tasks efficiently</p>
+        <button id="themeBtn" onclick="toggleTheme()">🌙 Dark Mode</button>
+        <div class="input-group">
+            <select id="category">
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+            </select>
+            <input type="text" id="taskInput" placeholder="Enter a task">
+            <input type="date" id="dueDate">
+            <button onclick="addTask()">Add</button>
+        </div>
+        <input type="text" id="searchInput" placeholder="search task..." oninput="updateTasks()">
+        <div class="filter-buttons">
+            <button onclick="filterTasks('All', this)">All</button>
+            <button onclick="filterTasks('Work', this)">Work</button>
+            <button onclick="filterTasks('Personal', this)">Personal</button>
+
+        </div>
+        <div class="stats">
+            <p>Total: <span id="totalTasks">0</span></p>
+            <p>Completed: <span id="completedTasks">0</span></p>
+            <p>Pending: <span id="pendingTasks">0</span></p>
+        </div>
+        <div class="progress-container">
+            <div id="progressBar"></div>
+        </div>
+
+        <ul id="taskList"></ul>
+        <p id="emptyMsg">No tasks yet</p>
     </div>
 
-    <div class="section">
-    <h2>About Me</h2>
-    <p>I am learning HTML, CSS and JavaScript. I enjoy building projects.</p>
-    </div>
+    <script>
+        function filterTasks(category, btn) {
+            let buttons = document.querySelectorAll(".filter-buttons button");
 
-    <div class="section">
-    <h2>Projects</h2>
-    <div class="projects">
-        <a href="https://arpitadg-ti.github.io/To-Do-App/" class="project-card">To-Do App</a>
-        <a href="https://arpitadg-ti.github.io/Log-In-form/" class="project-card">Login Form</a>
-    </div>
-    </div>
+            buttons.forEach(b => b.classList.remove("active"));
 
-    <div class="section">
-    <h2>Contact</h2>
-    <p>Email: arpita.dg07@gmail.com</p>
-    <p>
-        GitHub:
-        <a href=" https://github.com/arpitadg-ti" target="_blank">
-             github.com/arpitadg-ti
-        </a>
-       
-    </p>
-    </div>
-    </div>
+            btn.classList.add("active");
+
+            updateTasks();
+        }
+        function checkEmpty() {
+            let list = document.getElementById("taskList");
+            let msg = document.getElementById("emptyMsg");
+
+            if (list.children.length === 0) {
+                msg.style.display = "block";
+
+            } else {
+                msg.style.display = "none";
+            }
+
+        }
+        function searchTasks() {
+            let searchvalue = document.getElementById("searchInput").value.toLowerCase();
+            let tasks = document.querySelectorAll("#taskList li");
+            tasks.forEach(function (li) {
+                let text = li.childNodes[0].textContent.toLowerCase();
+                if (text.includes(searchvalue)) {
+                    li.style.display = "flex";
+                } else {
+                    li.style.display = "none";
+                }
+            });
+        }
+        function updateTasks() {
+            let searchValue = document.getElementById("searchInput").value.toLowerCase();
+            let activeCategory = document.querySelector(".filter-buttons .active")?.innerText || "All";
+
+            let tasks = document.querySelectorAll("#taskList li");
+
+            tasks.forEach(function (li) {
+                let text = li.childNodes[0].textContent.toLowerCase();
+                let category = li.getAttribute("data-category");
+
+                let matchSearch = text.includes(searchValue);
+                let matchCategory = (activeCategory === "All" || category === activeCategory);
+
+                if (matchSearch && matchCategory) {
+                    li.style.display = "flex";
+                } else {
+                    li.style.display = "none";
+                }
+            });
+        }
+        function updateStats() {
+            let total = document.querySelectorAll("#taskList li").length;
+
+            let completed = document.querySelectorAll("#taskList .completed").length;
+
+            let pending = total - completed;
+
+            let percentage = 0;
+
+            if (total > 0) {
+                percentage = (completed / total) * 100;
+            }
+
+            document.getElementById("progressBar").style.width =
+                percentage + "%";
+
+            document.getElementById("totalTasks").innerText = total;
+
+            document.getElementById("completedTasks").innerText = completed;
+
+            document.getElementById("pendingTasks").innerText = pending;
+        }
+
+        async function addTask() {
+            let taskInput = document.getElementById("taskInput");
+            let taskText = taskInput.value;
+            let dueDate = document.getElementById("dueDate").value;
+            let category = getCategoryFromAI(taskText);
+            let priority = getPriority(taskText);
+            taskText = rewriteTask(taskText);
+
+            if (taskText === "") {
+                alert("Please enter a task");
+                return;
+            }
+            let li = document.createElement("li");
+            li.classList.add("task-" + priority.toLocaleLowerCase());
+            li.setAttribute("data-category", category);
+            li.setAttribute("data-date", dueDate);
+            li.innerText = taskText;
+            let categorySpan = document.createElement("span");
+            categorySpan.innerText = " (" + category + ")";
+            li.appendChild(categorySpan);
+            let prioritySpan = document.createElement("span");
+            prioritySpan.innerText = " [" + priority + "]";
+            prioritySpan.classList.add("priority", priority.toLowerCase());
+            li.appendChild(prioritySpan);
+            li.onclick = function () {
+                li.classList.toggle("completed");
+                saveTasks();
+                updateStats();
+            };
+            let dateSpan = document.createElement("span");
+            dateSpan.innerText = dueDate ? "Due: " + dueDate : "No Due Date";
+            li.appendChild(dateSpan);
+
+            let deleteBtn = document.createElement("button");
+            deleteBtn.innerText = "❌";
+
+            deleteBtn.onclick = function (event) {
+                event.stopPropagation();
+                li.remove();
+                saveTasks();
+                checkEmpty();
+                updateStats();
+            };
+            let editBtn = document.createElement("button");
+            editBtn.innerText = "✏️";
+
+            editBtn.onclick = function (event) {
+                event.stopPropagation();
+                let newText = prompt("Edit your task:", li.firstChild.textContent);
+                if (newText !== null && newText.trim() !== "") {
+                    li.childNodes[0].textContent = newText;
+                    saveTasks();
+                }
+            };
+            li.appendChild(deleteBtn);
+            li.appendChild(editBtn);
+            document.getElementById("taskList").appendChild(li);
+
+            taskInput.value = "";
+            saveTasks();
+            checkEmpty();
+            updateStats();
+            taskInput.focus();
+
+        }
+        function getCategoryFromAI(taskText) {
+            taskText = taskText.toLowerCase();
+
+            const workKeywords = [
+                "study", "project", "assignment", "meeting",
+                "code", "exam", "ppt", "presentation", "work", "office"
+            ];
+            const personalKeywords = ["gym", "shop", "buy", "family", "call", "travel"];
+
+            if (workKeywords.some(word => taskText.includes(word))) {
+                return "Work";
+            }
+
+            if (personalKeywords.some(word => taskText.includes(word))) {
+                return "Personal";
+            }
+
+            return "Personal";
+        }
+        function rewriteTask(taskText) {
+            if (taskText.length < 10) {
+                return "Complete: " + taskText + " properly";
+            }
+            return taskText;
+        }
+        function getPriority(taskText) {
+            taskText = taskText.toLowerCase();
+
+            const highPriority = [
+                "urgent",
+                "asap",
+                "important",
+                "today",
+                "deadline",
+                "submission",
+                "submit",
+                "project",
+                "exam",
+                "interview"
+            ];
+
+            const lowPriority = [
+                "later",
+                "tomorrow",
+                "weekend",
+                "sometime"
+            ];
+
+            if (highPriority.some(word => taskText.includes(word))) {
+                return "High";
+            }
+
+            if (lowPriority.some(word => taskText.includes(word))) {
+                return "Low";
+            }
+
+            return "Medium";
+        }
+
+        document.getElementById("taskInput").addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                addTask();
+            }
+
+        });
+
+        function saveTasks() {
+            let tasks = [];
+            let listItems = document.querySelectorAll("#taskList li");
+
+            listItems.forEach(function (li) {
+                tasks.push({
+                    text: li.childNodes[0].textContent.trim(),
+                    completed: li.classList.contains("completed"),
+                    category: li.getAttribute("data-category"),
+                    priority: li.querySelector(".priority").innerText.replace(/[\[\]]/g, ""),
+                    dueDate: li.getAttribute("data-date")
+                });
+            });
+
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+        }
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "dark");
+            } else {
+                localStorage.setItem("theme", "light");
+            }
+        }
+        window.onload = function () {
+            if (localStorage.getItem("theme") === "dark") {
+                document.body.classList.add("dark-mode");
+            }
+            let savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            savedTasks.forEach(function (task) {
+                let li = document.createElement("li");
+                li.classList.add("task-" + task.priority.toLowerCase());
+                li.innerText = task.text;
+                li.setAttribute("data-category", task.category);
+                let categorySpan = document.createElement("span");
+                categorySpan.innerText = " (" + task.category + ")";
+                li.appendChild(categorySpan);
+                let dateSpan = document.createElement("span");
+                dateSpan.innerText = task.dueDate ? "Due :" + task.dueDate : "No Due Date";
+                li.appendChild(dateSpan);
+                let prioritySpan = document.createElement("span");
+                prioritySpan.innerText = " [" + task.priority + "]";
+                prioritySpan.classList.add("priority", task.priority.toLowerCase());
+                li.appendChild(prioritySpan);
+                li.onclick = function () {
+                    li.classList.toggle("completed");
+                    saveTasks();
+                    updateStats();
+                };
+                if (task.completed) {
+                    li.classList.add("completed");
+                }
+                let deleteBtn = document.createElement("button");
+                deleteBtn.innerText = "❌";
+                deleteBtn.onclick = function (event) {
+                    event.stopPropagation();
+                    li.remove();
+                    saveTasks();
+                };
+                let editBtn = document.createElement("button");
+                editBtn.innerText = "✏️";
+                editBtn.onclick = function (event) {
+                    event.stopPropagation();
+                    let newText = prompt("Edit your task: ", task.text);
+                    if (newText !== null && newText.trim() !== "") {
+                        li.childNodes[0].textContent = newText;
+                        saveTasks();
+                    }
+                };
+                li.appendChild(deleteBtn);
+                li.appendChild(editBtn);
+                document.getElementById("taskList").appendChild(li);
+            });
+            checkEmpty();
+            updateStats();
+        }
+    </script>
 
 </body>
+
 </html>
